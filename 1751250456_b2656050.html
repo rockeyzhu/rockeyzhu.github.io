@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语单词选择题</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5;
+        }
+        .question {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0.1);
+        }
+        .options {
+            margin-top: 15px;
+        }
+        .option {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #f0;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .option:hover {
+            background-color: #e0;
+        }
+        .explanation {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border-radius: 4px;
+            display: none;
+        }
+        .correct {
+            background-color: #c8e6c9;
+        }
+        .incorrect {
+            background-color: #ffcdd2;
+        }
+    </style>
+</head>
+<body>
+    <h1>英语单词选择题</h1>
+    
+    <div class="question" id="q1">
+        <h3>1. "create" 的中文意思是？</h3>
+        <div class="options">
+            <div class="option" onclick="checkAnswer(1, 'a')">A. 创造</div>
+            <div class="option" onclick="checkAnswer(1, 'b')">B. 批评</div>
+            <div class="option" onclick="checkAnswer(1, 'c')">C. 庆祝</div>
+            <div class="option" onclick="checkAnswer(1, 'd')">D. 计算</div>
+        </div>
+        <div class="explanation" id="explanation1">
+            <p><strong>正确答案：A. 创造</strong></p>
+            <p>"create"的意思是"创造、创作、建立"。例如：The artist created a beautiful painting.（艺术家创作了一幅美丽的画作。）</p>
+            <p>其他选项：B."criticize"(批评), C."celebrate"(庆祝), D."calculate"(计算)</p>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(questionNumber, selectedOption) {
+            const explanations = document.getElementsByClassName('explanation');
+            const options = document.querySelectorAll(`#q${questionNumber} .option`);
+            
+            // Reset all options
+            options.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+            
+            // Show explanation
+            explanations[questionNumber-1].style.display = 'block';
+            
+            // Check answer
+            if (questionNumber === 1 && selectedOption === 'a') {
+                document.querySelector(`#q${questionNumber} .option:nth-child(1)`).classList.add('correct');
+            } else if (questionNumber === 1) {
+                document.querySelector(`#q${questionNumber} .option:nth-child(1)`).classList.add('correct');
+                document.querySelector(`#q${questionNumber} .option:nth-child(${selectedOption.charCodeAt(0)-96})`).classList.add('incorrect');
+            }
+        }
+    </script>
+</body>
+</html>
