@@ -1,0 +1,146 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语单词测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        button {
+            padding: 8px;
+            background-color: #f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e0e0;
+        }
+        .correct {
+            background-color: #a8e6a8;
+        }
+ .incorrect {
+            background-color: #ffaaaa;
+        }
+        #score {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        #nextBtn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #nextBtn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>英语单词测试</h1>
+    <div id="quizContainer"></div>
+    <div id="score">得分: 0</div>
+    <button id="nextBtn" style="display: none;">下一题</button>
+
+    <script>
+        let score = 0;
+        let currentQuestionIndex = 0;
+        let questions = [];
+        
+        function generateQuestions() {
+            const word = prompt("请输入一个英语单词:");
+            if (!word) return;
+            
+            const meaning = prompt(`请输入"${word}"的正确中文意思:`);
+            if (!meaning) return;
+            
+            const wrong1 = prompt("请输入第一个错误选项:");
+            const wrong2 = prompt("请输入第二个错误选项:");
+            const wrong3 = prompt("请输入第三个错误选项:");
+            
+            questions = [{
+                word: word,
+                options: [
+                    { text: meaning, correct: true },
+                    { text: wrong1, correct: false },
+                    { text: wrong2, correct: false },
+                    { text: wrong3, correct: false }
+                ].sort(() => Math.random() - 0.5)
+            }];
+            
+            showQuestion();
+        }
+        
+        function showQuestion() {
+            if (currentQuestionIndex >= questions.length) {
+                document.getElementById('quizContainer').innerHTML = "<p>测验完成!</p>";
+                document.getElementById('nextBtn').style.display = 'none';
+                return;
+            }
+            
+            const question = questions[currentQuestionIndex];
+            let optionsHtml = question.options.map(option => 
+                `<button onclick="checkAnswer(this, ${option.correct})">${option.text}</button>`
+            ).join('');
+            
+            document.getElementById('quizContainer').innerHTML = `
+                <div class="question">
+                    <p>单词: ${question.word}</p>
+                    <div class="options">
+                        ${optionsHtml}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function checkAnswer(button, isCorrect) {
+            const buttons = document.querySelectorAll('.options button');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn === button) {
+                    btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+                }
+            });
+            
+            if (isCorrect) {
+                score++;
+                document.getElementById('score').textContent = `得分: ${score}`;
+            }
+            
+            document.getElementById('nextBtn').style.display = 'block';
+        }
+        
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            currentQuestionIndex++;
+            document.getElementById('nextBtn').style.display = 'none';
+            showQuestion();
+        });
+        
+        generateQuestions();
+    </script>
+</body>
+</html>
+```
