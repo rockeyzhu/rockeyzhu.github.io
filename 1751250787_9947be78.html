@@ -1,0 +1,222 @@
+Here's the HTML file with an interactive quiz for the words "exchange", "awkward", and "greenhouse":
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Vocabulary Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5;
+        }
+        .question {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0.1);
+        }
+        .options {
+            margin-top: 10px;
+        }
+        .option {
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .option:hover {
+            background-color: #f0;
+        }
+        .selected {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .explanation {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .correct-explanation {
+            background-color: #d4edda;
+        }
+        .incorrect-explanation {
+            background-color: #f8d7da;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0069d9;
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .score {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>English Vocabulary Quiz</h1>
+    <p>Choose the correct Chinese meaning for each English word:</p>
+    
+    <div class="score">
+        Score: <span id="score">0</span>/3
+    </div>
+    
+    <div class="question" id="q1">
+        <h3>1. exchange</h3>
+        <div class="options">
+            <div class="option" onclick="selectOption(this, 'q1')" data-correct="false">交换生</div>
+            <div class="option" onclick="selectOption(this, 'q1')" data-correct="true">交换</div>
+            <div class="option" onclick="selectOption(this, 'q1')" data-correct="false">外汇</div>
+            <div class="option" onclick="selectOption(this, 'q1')" data-correct="false">交易所</div>
+        </div>
+        <div class="explanation" id="explanation-q1">
+            "exchange" 的基本意思是"交换"，其他选项都是特定场景下的衍生含义。
+        </div>
+    </div>
+    
+    <div class="question" id="q2">
+        <h3>2. awkward</h3>
+        <div class="options">
+            <div class="option" onclick="selectOption(this, 'q2')" data-correct="false">笨重的</div>
+            <div class="option" onclick="selectOption(this, 'q2')" data-correct="false">危险的</div>
+            <div class="option" onclick="selectOption(this, 'q2')" data-correct="true">尴尬的</div>
+            <div class="option" onclick="selectOption(this, 'q2')" data-correct="false">奇怪的</div>
+        </div>
+        <div class="explanation" id="explanation-q2">
+            "awkward" 主要指社交场合中的"尴尬"，虽然有时也可表示"笨拙的"，但主要含义是"尴尬的"。
+        </div>
+    </div>
+    
+    <div class="question" id="q3">
+        <h3>3. greenhouse</h3>
+        <div class="options">
+            <div class="option" onclick="selectOption(this, 'q3')" data-correct="false">绿色房屋</div>
+            <div class="option" onclick="selectOption(this, 'q3')" data-correct="false">环保建筑</div>
+            <div class="option" onclick="selectOption(this, 'q3')" data-correct="false">植物园</div>
+            <div class="option" onclick="selectOption(this, 'q3')" data-correct="true">温室</div>
+        </div>
+        <div class="explanation" id="explanation-q3">
+            "greenhouse" 是"温室"的意思，不要被字面意思"绿色的房子"误导。
+        </div>
+    </div>
+    
+    <button onclick="checkAnswers()">Check Answers</button>
+    <button onclick="resetQuiz()">Reset Quiz</button>
+    
+    <script>
+        let score = 0;
+        const totalQuestions = 3;
+        
+        function selectOption(optionElement, questionId) {
+            const questionDiv = document.getElementById(questionId);
+            const options = questionDiv.querySelectorAll('.option');
+            
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            optionElement.classList.add('selected');
+        }
+        
+        function checkAnswers() {
+            score = 0;
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionId = 'q' + i;
+                const questionDiv = document.getElementById(questionId);
+                const selectedOption = questionDiv.querySelector('.option.selected');
+                const explanation = document.getElementById('explanation-' + questionId);
+                
+                if (selectedOption) {
+                    if (selectedOption.getAttribute('data-correct') === 'true') {
+                        selectedOption.classList.add('correct');
+                        score++;
+                        explanation.classList.add('correct-explanation');
+                        explanation.textContent = "Correct! " + explanation.textContent;
+                    } else {
+                        selectedOption.classList.add('incorrect');
+                        explanation.classList.add('incorrect-explanation');
+                        explanation.textContent = "Incorrect. " + explanation.textContent;
+                        
+                        // Highlight the correct answer
+                        const correctOption = questionDiv.querySelector('.option[data-correct="true"]');
+                        correctOption.classList.add('correct');
+                    }
+                    
+                    explanation.style.display = 'block';
+                }
+                       
+            document.getElementById('score').textContent = score;
+        }
+        
+        function resetQuiz() {
+            score = 0;
+            document.getElementById('score').textContent = score;
+            
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionId = 'q' + i;
+                const questionDiv = document.getElementById(questionId);
+                const options = questionDiv.querySelectorAll('.option');
+                const explanation = document.getElementById('explanation-' + questionId);
+                
+                options.forEach(opt => {
+                    opt.classList.remove('selected', 'correct', 'incorrect');
+                });
+                
+                explanation.style.display = 'none';
+                explanation.classList.remove('correct-explanation', 'incorrect-explanation');
+                
+                // Reset explanation text to original
+                if (i === 1) {
+                    explanation.textContent = '"exchange" 的基本意思是"交换"，其他选项都是特定场景下的衍生含义。';
+                } else if (i === 2) {
+                    explanation.textContent = '"awkward" 主要指社交场合中的"尴尬"，虽然有时也可表示"笨拙的"，但主要含义是"尴尬的"。';
+                } else if (i === 3) {
+                    explanation.textContent = '"greenhouse" 是"温室"的意思，不要被字面意思"绿色的房子"误导。';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+```
+
+This HTML file creates an interactive quiz with the following features:
+1. Three vocabulary questions (exchange, awkward, greenhouse)
+2. Four Chinese options for each word (only one correct)
+3. Visual feedback when selecting answers
+4. Score tracking
+5. Explanations for correct/incorrect answers
+6. Reset button to start over
+
+The options are designed to include common misinterpretations or partial understandings of the words to test deeper comprehension.
